@@ -7,6 +7,8 @@ package context;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,13 +19,14 @@ public class DBContext {
     
     public DBContext() {
         try {
-            String url = "jdbc:mysql://localhost:3306/quiz_pratice";
-            String username = "root";
-            String password = "admin"; // Thay doi tren tung may
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(url,username, password);
+            //Change the username password and url to connect your own database
+            String username = "sa";
+            String password = "123";
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=ChildrenCare";
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            connection = DriverManager.getConnection(url, username, password);
         } catch (ClassNotFoundException | SQLException ex) {
-            System.out.println(ex.getMessage());
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
