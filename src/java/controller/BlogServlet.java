@@ -83,25 +83,25 @@ public class BlogServlet extends HttpServlet {
             page = 1;
         }
         PostDAO postDao = new PostDAO();
-//        List<String> categoryList = postDao.allCategoryPost();
-//        int numOfPage = (postDao.getCountOfPostsUserChoose(postTitle, postCategory) + 5) / 6;
-//        List<Post> list = postDao.getSortedPagedPostsByUserChoice((page - 1) * 6, 6, postTitle, postCategory);
-//        categoryList.add(0, "Post Category");
-//        if (!postCategory.isEmpty()) {
-//            categoryList.remove(postCategory);
-//            categoryList.add(0, postCategory);
-//        }
-//        if (list.isEmpty()) {
-//            request.setAttribute("notFound", "There are no matching posts");
-//            request.getRequestDispatcher("./view/blog-list.jsp").forward(request, response);
-//        } else {
-//            request.setAttribute("postTitle", postTitle);
-//            request.setAttribute("postCategory", postCategory);
-//            request.setAttribute("categoryList", categoryList);
-//            request.setAttribute("numOfPage", numOfPage);
-//            request.setAttribute("list", list);
-//            request.getRequestDispatcher("./view/blog-list.jsp").forward(request, response);
-//        }
+        List<String> categoryList = postDao.allCategoryPost();
+        int numOfPage = (postDao.getCountOfPostsUserChoose(postTitle, postCategory) + 5) / 6;
+        List<Post> list = postDao.getSortedPagedPostsByUserChoice((page - 1) * 6, 6, postTitle, postCategory);
+        categoryList.add(0, "Post Category");
+        if (!postCategory.isEmpty()) {
+            categoryList.remove(postCategory);
+            categoryList.add(0, postCategory);
+        }
+        if (list.isEmpty()) {
+            request.setAttribute("notFound", "There are no matching posts");
+            request.getRequestDispatcher("./view/blog-list.jsp").forward(request, response);
+        } else {
+            request.setAttribute("postTitle", postTitle);
+            request.setAttribute("postCategory", postCategory);
+            request.setAttribute("categoryList", categoryList);
+            request.setAttribute("numOfPage", numOfPage);
+            request.setAttribute("list", list);
+            request.getRequestDispatcher("./view/blog-list.jsp").forward(request, response);
+        }
     }
 
     /**
