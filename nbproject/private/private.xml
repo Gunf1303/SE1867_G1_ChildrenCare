@@ -4,9 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/A_Fall24/SE1867_G1_ChildrenCare/src/java/controller/BlogServlet.java</file>
-            <file>file:/D:/A_Fall24/SE1867_G1_ChildrenCare/src/java/context/DBContext.java</file>
-            <file>file:/D:/A_Fall24/SE1867_G1_ChildrenCare/src/java/dao/ServiceDAO.java</file>
-            <file>file:/D:/A_Fall24/SE1867_G1_ChildrenCare/src/java/model/Service.java</file>
+            <file>file:/D:/A_Fall24/SE1867_G1_ChildrenCare/web/view/blog-list.jsp</file>
+            <file>file:/D:/A_Fall24/SE1867_G1_ChildrenCare/web/view/blog-detail.jsp</file>
+            <file>file:/D:/A_Fall24/SE1867_G1_ChildrenCare/src/java/controller/BlogDetailServlet.java</file>
             <file>file:/D:/A_Fall24/SE1867_G1_ChildrenCare/src/java/dao/PostDAO.java</file>
         </group>
     </open-files>
