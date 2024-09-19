@@ -240,4 +240,188 @@ public class PostDAO extends DAO {
         }
         return avatar;
     }
+      
+       public void update(int postID, Post post) {
+        xSql = "UPDATE [dbo].[Posts]\n"
+                + "   SET Title=?,Content=?,BriefInfo=?,Thumbnail=?,AuthorID=?,ServiceID=? ,CreatedDate=?, CategoryPost=?, StatusPost=?"
+                + " WHERE [PostID] = ?";
+        try {
+            ps = con.prepareStatement(xSql);
+            ps.setString(1, post.getTitle());
+            ps.setString(2, post.getContent());
+            ps.setString(3, post.getBriefInfo());
+            ps.setString(4, post.getThumbnail());
+            ps.setInt(5, post.getAuthorID());
+            ps.setInt(6, post.getServiceID());
+            ps.setDate(7, post.getCreatedDate());
+            ps.setString(8, post.getCategoryPost());
+            ps.setBoolean(9, post.isStatusPost());
+            ps.setInt(10, postID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            // Handle exception appropriately
+            System.out.println(e);
+        }
+    }
+       public List<Integer> allAuthorID() {
+        xSql = "select  DISTINCT AuthorID from Posts";
+        List<Integer> authorList = new ArrayList<>();
+        try {
+            ps = con.prepareStatement(xSql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                authorList.add(rs.getInt(1));
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return authorList;
+    }
+        public int getCountOfPostsManagerChoose(String keyword, String categoryPost, String AuthorID, String postStatus) {
+        int count = 0;
+        xSql = "SELECT COUNT(*) AS count "
+                + "FROM [dbo].[Posts]"
+                + "WHERE Title LIKE ? ";
+
+        if (!categoryPost.isEmpty()) {
+            xSql += "AND CategoryPost = ? ";
+        }
+        if (!AuthorID.isEmpty()) {
+            xSql += " and AuthorID = ? ";
+        }
+        if (!postStatus.isEmpty()) {
+            xSql += "and StatusPost= ? ";
+        }
+        try {
+            ps = con.prepareStatement(xSql);
+            ps.setString(1, "%" + keyword + "%");
+            int index = 2;
+            if (!categoryPost.isEmpty()) {
+                ps.setString(index, categoryPost);
+                index++;
+            }
+            if (!AuthorID.isEmpty()) {
+                int authorID = Integer.parseInt(AuthorID);
+                ps.setInt(index, authorID);
+                index++;
+            }
+            if (!postStatus.isEmpty()) {
+                boolean status = Boolean.parseBoolean(postStatus);
+                ps.setBoolean(index, status);
+            }
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+         public List<Post> getSortedPagedPostsByManagerChoice(int offSetPage, int numberOfPage, String keyword, String postCategory, String AuthorID, String postStatus, String sortBy) {
+        List<Post> postList = new ArrayList<>();
+        xSql = "SELECT *  FROM Posts "
+                + "WHERE Title like ? ";
+        if (!postCategory.isEmpty()) {
+            xSql += " and CategoryPost = ? ";
+        }
+        if (!AuthorID.isEmpty()) {
+            xSql += " and AuthorID = ? ";
+        }
+        if (!postStatus.isEmpty()) {
+            xSql += "and StatusPost= ? ";
+        }
+        if (sortBy.isEmpty()) {
+            sortBy = "Title";
+        }
+        xSql += " ORDER BY ";
+        xSql += sortBy;
+        xSql += " OFFSET ? ROWS "
+                + " FETCH NEXT ? ROWS ONLY ";
+        try {
+            int index = 2;
+            ps = con.prepareStatement(xSql);
+            ps.setString(1, "%" + keyword + "%");
+            if (!postCategory.isEmpty()) {
+                ps.setString(index, postCategory);
+                index++;
+            }
+            if (!AuthorID.isEmpty()) {
+                int authorID = Integer.parseInt(AuthorID);
+                ps.setInt(index, authorID);
+                index++;
+            }
+            if (!postStatus.isEmpty()) {
+                boolean status = Boolean.parseBoolean(postStatus);
+                ps.setBoolean(index, status);
+                index++;
+            }
+            ps.setInt(index, offSetPage);
+            index++;
+            ps.setInt(index, numberOfPage);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int postID = rs.getInt(1);
+                String title = rs.getString(2);
+                String content = rs.getString(3);
+                String briefInfo = rs.getString(4);
+                String thumbnail = rs.getString(5);
+                int count = rs.getInt(6);
+                int authorID = rs.getInt(7);
+                int serviceID = rs.getInt(8);
+                Date createdDate = rs.getDate(9);
+                String categoryPost = rs.getString(10);
+                Boolean statusPost = rs.getBoolean(11);
+                Post post = new Post(postID, title, content, briefInfo, thumbnail, count, authorID, serviceID, createdDate, categoryPost, statusPost);
+                postList.add(post);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return postList;
+    }
+         public int getLastPostID() {
+        int lastID = 1;
+        xSql = "select Top 1 PostID  from Posts order by PostID desc";
+        try {
+            ps = con.prepareStatement(xSql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                lastID = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lastID;
+    }
+         public void insert(Post post) {
+        xSql = "INSERT INTO Posts(Title, Content, BriefInfo, Thumbnail, AuthorID, ServiceID, CreatedDate, CategoryPost) \n"
+                + "     VALUES (? ,? ,? ,? ,? ,? ,?, ?)";
+        try {
+            ps = con.prepareStatement(xSql);
+            ps.setString(1, post.getTitle());
+            ps.setString(2, post.getContent());
+            ps.setString(3, post.getBriefInfo());
+            ps.setString(4, post.getThumbnail());
+            ps.setInt(5, post.getAuthorID());
+            ps.setInt(6, post.getServiceID());
+            ps.setDate(7, post.getCreatedDate());
+            ps.setString(8, post.getCategoryPost());
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
