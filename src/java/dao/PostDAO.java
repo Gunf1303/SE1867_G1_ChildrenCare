@@ -182,4 +182,62 @@ public class PostDAO extends DAO {
 
         return count;
     }
+    
+    public Post getPostByID(int ID) {
+        Post post = null;
+        xSql = "select * from [dbo].[Posts] where PostID = ?";
+        try {
+            ps = con.prepareStatement(xSql);
+            ps.setInt(1, ID);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                int postID = rs.getInt(1);
+                String title = rs.getString(2);
+                String content = rs.getString(3);
+                String briefInfo = rs.getString(4);
+                String thumbnail = rs.getString(5);
+                int count = rs.getInt(6);
+                int authorID = rs.getInt(7);
+                int serviceID = rs.getInt(8);
+                Date createdDate = rs.getDate(9);
+                String categoryPost = rs.getString(10);
+                Boolean statusPost = rs.getBoolean(11);
+                post = new Post(postID, title, content, briefInfo, thumbnail, count, authorID, serviceID, createdDate, categoryPost, statusPost);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return post;
+    }
+    
+     public String getNameByUserID(int authourID) {
+        xSql = "select top 1 u.FirstName from Users as u join Posts as p on u.UserID = p.AuthorID where p.AuthorID=?";
+        String avatar = "";
+        try {
+            ps = con.prepareStatement(xSql);
+            ps.setInt(1, authourID);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                avatar = rs.getString(1);
+            }
+        } catch (Exception e) {
+        }
+        return avatar;
+    }
+      public String getAvatarByUserID(int authourID) {
+        xSql = "select top 1 u.ProfileImage from Users as u join Posts as p on u.UserID = p.AuthorID where p.AuthorID=?";
+        String avatar = "";
+        try {
+            ps = con.prepareStatement(xSql);
+            ps.setInt(1, authourID);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                avatar = rs.getString(1);
+            }
+        } catch (Exception e) {
+        }
+        return avatar;
+    }
 }

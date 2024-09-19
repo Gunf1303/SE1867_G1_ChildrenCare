@@ -1,11 +1,6 @@
-<%-- 
-    Document   : newjsp
-    Created on : Sep 17, 2023, 6:27:42 PM
-    Author     : quanh
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "model.*" %>
-<%@page import = "Database.*" %>
+<%@page import = "dao.*" %>
 <%@page import = "java.util.*" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,10 +15,9 @@
             crossorigin="anonymous"
             />
         <link rel="stylesheet" href="./resources/css/post-style.css">
-        <title>Medilab</title>
+        <title>ChildrenCare</title>
     </head>
     <body>
-        <jsp:include page="./layout/Header.jsp" />
         <!-- Blog Start -->
         <div class="container py-5" id="blog-list">
             <div class="row g-5" >
@@ -54,7 +48,7 @@
                     <!-- Category Start -->
                     <div class="mb-5">
                         <%PostDAO postDAO = new PostDAO();%>
-                        <form action="blogPage">
+                        <form action="blog">
                             <input id="post-title" type="text" name="postTitle" placeholder="Search" class="form-select text-primary mt-3 search"/>
                             <select class="form-select text-primary mt-3" name="postCategory">
                                 <option selected value="">Post Category</option>
@@ -64,8 +58,8 @@
                                 <%}%>
                             </select>
                         </form>
-                        <br>
-                        <a href="service?event=to-contact-link" class="mt-3 ms-2">Contact Us</a>
+<!--                        <br>
+                        <a href="service?event=to-contact-link" class="mt-3 ms-2">Contact Us</a>-->
                     </div>
                     <!-- Category End -->
                 </div>
@@ -73,7 +67,6 @@
             </div>
         </div>
         <!-- Blog End -->
-        <jsp:include page="layout/footer.jsp" />
     </body>
 </html>
 
