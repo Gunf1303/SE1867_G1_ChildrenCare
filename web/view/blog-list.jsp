@@ -1,11 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%-- 
-    Document   : newjsp
-    Created on : Sep 17, 2023, 6:27:42 PM
-    Author     : quanh
---%>
 <%@page import = "model.*" %>
-<%@page import = "Database.*" %>
+<%@page import = "dao.*" %>
 <%@page import = "java.util.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -22,7 +17,7 @@
             crossorigin="anonymous"
             />
         <link rel="stylesheet" href="./resources/css/post-style.css">
-        <title>Medilab</title>
+        <title>ChildrenCare</title>
     </head>
     <body>
         
@@ -31,7 +26,7 @@
             <div class="col-md-9" id="blog-list">
                 <div class="container py-5">
                     <div class="row g-5">
-                        <<h1>${notFound}</h1>
+                        <h1>${notFound}</h1>
                         <c:forEach var="l" items="${list}">
                             <div class="col-xl-4 col-lg-6">
                                 <div class="bg-light rounded overflow-hidden">
@@ -48,15 +43,15 @@
             </div>
             <div class="container row mt-5 mb-4">
                 <div class="mb-5">
-                    <form action="blogPage">
+                    <form action="blog">
                         <input type="text" name="postTitle" placeholder="Search" class="form-select text-primary mt-3 search" value="${postTitle}"/>
                         <select class="form-select text-primary mt-3" name="postCategory">
                             <c:forEach var="c" items="${categoryList}">
                                 <option value="${c}">${c}</option>
                             </c:forEach>
                         </select>
-                        <br>
-                        <a href="service?event=to-contact-link" class="mt-3 ms-2">Contact Us</a>
+<!--                        <br>
+                        <a href="service?event=to-contact-link" class="mt-3 ms-2">Contact Us</a>-->
                 </div>
             </div>
         </div>
