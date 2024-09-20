@@ -66,6 +66,26 @@
 
                         <div class="col-md-12">
                             <div class="d-flex flex-column align-items-center justify-content-center mt-2">
+                                 <form action="postManage">
+                                            <div class="container d-flex justify-content-between">
+                                                <input type="text" name="postTitle" placeholder="Search Title" class="form-control w-25 mx-3" value="${postTitle}" />
+                                                <select class="form-select text-primary w-25 me-3" name="postAuthor" >
+                                                    <c:forEach var="a" items="${authorList}">
+                                                        <option value="${a.getUserID()}">${a.getFirstName()} ${a.getLastName()} </option>
+                                                    </c:forEach>
+                                                </select>
+                                                <select class="form-select text-primary w-25 me-3" name="postCategory" >
+                                                    <c:forEach var="c" items="${categoryList}">
+                                                        <option value="${c}">${c} </option>
+                                                    </c:forEach>
+                                                </select>
+                                                <select class="form-select text-primary w-25 me-3" name="sortBy" >
+                                                    <c:forEach var="s" items="${sortList}">
+                                                        <option value="${s}">${s}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                                </form>
                                 <div class="container row mt-5 mb-4">
                                     <div class="col-md-12">
                                         <!-- Services List -->
@@ -104,35 +124,20 @@
 
                                             </tbody>
                                         </table>
-                                        <form action="postManage">
-                                            <div class="container d-flex justify-content-between">
-                                                <input type="text" name="postTitle" placeholder="Search Title" class="form-control w-25 mx-3" value="${postTitle}" />
-                                                <select class="form-select text-primary w-25 me-3" name="postAuthor" >
-                                                    <c:forEach var="a" items="${authorList}">
-                                                        <option value="${a.getUserID()}">${a.getFirstName()} ${a.getLastName()} </option>
-                                                    </c:forEach>
-                                                </select>
-                                                <select class="form-select text-primary w-25 me-3" name="postCategory" >
-                                                    <c:forEach var="c" items="${categoryList}">
-                                                        <option value="${c}">${c} </option>
-                                                    </c:forEach>
-                                                </select>
-                                                <select class="form-select text-primary w-25 me-3" name="sortBy" >
-                                                    <c:forEach var="s" items="${sortList}">
-                                                        <option value="${s}">${s}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
+                                       
                                     </div>
                                 </div>
                             </div>
+                                                <form action="postManage">
                             <div class="d-flex justify-content-center mb-5" id="pagination-container">
                                 <c:forEach var="p" begin="1" end="${numOfPage}">
                                     <input class="pagination-btn ms-2 active" type="submit" name="page" value="${p}" /> 
                                 </c:forEach>
                             </div>
+                            </form>
+
                         </div>
-                        </form>
+                       </form>
                     </div>
                 </div>
 

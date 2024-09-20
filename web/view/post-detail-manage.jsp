@@ -95,6 +95,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
+                                            <p class="text-muted">Status: </p>
                                             <c:if test="${post.isStatusPost()}">
 
                                                 <select class="form-select text-primary mt-3 mb-4 w-75" name="status" >
@@ -111,6 +112,7 @@
                                             </c:if>
                                         </div>
                                         <div class="col-md-4">
+                                            <p class="text-muted">Category: </p>
                                             <select class="form-select text-primary mt-3 mb-4 w-75" name="postCategory"  class="form-select">
                                                 <c:forEach var="c" items="${categoryList}">
                                                     <option value="${c}">${c}</option>
