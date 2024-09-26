@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.CategoryServiceDAO;
 import dao.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,15 +13,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import model.CategoryService;
 import model.Service;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "ServiceController", urlPatterns = {"/services"})
-public class ServiceController extends HttpServlet {
+@WebServlet(name = "service-detail", urlPatterns = {"/service-detail"})
+public class ServiceDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,11 +34,16 @@ public class ServiceController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         ServiceDAO sDAO = new ServiceDAO();
         try {
-            List<Service> list = sDAO.getAllServices();
-            request.setAttribute("list", list);
-            request.getRequestDispatcher("/view/services-list.jsp").forward(request, response);
+            String id_raw = request.getParameter("ID");
+
+            ServiceDAO sDAO = new ServiceDAO();
+            Service s = sDAO.getServiceByID(id_raw);
+            CategoryServiceDAO csDAO = new CategoryServiceDAO();
+            request.setAttribute("csDAO", csDAO);
+            request.setAttribute("s", s);
+            request.setAttribute("listCate", csDAO.getAllCategoryServices());
+            request.getRequestDispatcher("/view/services-detail.jsp").forward(request, response);
         } catch (Exception e) {
             response.sendRedirect("5xx.html");
         }
