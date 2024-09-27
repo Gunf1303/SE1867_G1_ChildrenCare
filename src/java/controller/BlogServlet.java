@@ -84,26 +84,34 @@ public class BlogServlet extends HttpServlet {
         }
         PostDAO postDao = new PostDAO();
         List<String> categoryList = postDao.allCategoryPost();
-        int numOfPage = (postDao.getCountOfPostsUserChoose(postTitle, postCategory) + 5) / 6;
-        List<Post> list = postDao.getSortedPagedPostsByUserChoice((page - 1) * 6, 6, postTitle, postCategory);
-        categoryList.add(0, "Post Category");
-        if (!postCategory.isEmpty()) {
-            categoryList.remove(postCategory);
-            categoryList.add(0, postCategory);
-        }
-        if (list.isEmpty()) {
+       int totalPosts = postDao.getCountOfPostsUserChoose(postTitle, postCategory);
+
+        // Tính toán số trang cần thiết
+        int numOfPage = (int) Math.ceil((double) totalPosts / 6);
+        if (totalPosts == 0) {
             request.setAttribute("notFound", "There are no matching posts");
-            request.getRequestDispatcher("./view/blog-list.jsp").forward(request, response);
         } else {
+            // Lấy danh sách bài viết cho trang hiện tại
+            List<Post> list = postDao.getSortedPagedPostsByUserChoice((page - 1) * 6, 6, postTitle, postCategory);
+
+            // Đặt postCategory lên đầu danh sách nếu có
+            categoryList.add(0, "Post Category");
+            if (!postCategory.isEmpty()) {
+                categoryList.remove(postCategory);
+                categoryList.add(0, postCategory);
+            }
+
+            // Đẩy dữ liệu sang JSP
             request.setAttribute("postTitle", postTitle);
             request.setAttribute("postCategory", postCategory);
             request.setAttribute("categoryList", categoryList);
             request.setAttribute("numOfPage", numOfPage);
+            request.setAttribute("currentPage", page);
             request.setAttribute("list", list);
-            request.getRequestDispatcher("./view/blog-list.jsp").forward(request, response);
-        }
     }
-
+// Forward tới trang JSP
+        request.getRequestDispatcher("./view/blog-list.jsp").forward(request, response);
+    }
     /**
      * Handles the HTTP <code>POST</code> method.
      *

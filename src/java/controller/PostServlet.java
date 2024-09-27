@@ -211,24 +211,33 @@ public class PostServlet extends HttpServlet {
         }
         //get sortlist
         List<String> sortList = new ArrayList<>();
-
         sortList.add("Title");
         sortList.add("CategoryPost");
         sortList.add("AuthorID");
         sortList.add("StatusPost");
-        sortList.remove(sortBy);
-        sortList.add(0, sortBy);
 
-        //get number of page
-        int numOfPage = (postDao.getCountOfPostsManagerChoose(postTitle, postCategory, postAuthorID, postStatus) + 5) / 6;
-        //get list post  
+// Ensure the sortBy option is at the top of the list
+        if (sortBy != null && !sortBy.isEmpty()) {
+            sortList.remove(sortBy);
+            sortList.add(0, sortBy);
+        }
+
+// Get the total number of posts based on manager choices
+        int totalPosts = postDao.getCountOfPostsManagerChoose(postTitle, postCategory, postAuthorID, postStatus);
+
+// Calculate the number of pages needed
+        int numOfPage = (totalPosts == 0) ? 1 : (int) Math.ceil((double) totalPosts / 6);
+
+// Retrieve the list of posts for the current page
         List<Post> list = postDao.getSortedPagedPostsByManagerChoice((page - 1) * 6, 6, postTitle, postCategory, postAuthorID, postStatus, sortBy);
 
+// Set request attributes for JSP
         request.setAttribute("postTitle", postTitle);
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("authorList", authorList);
         request.setAttribute("sortList", sortList);
         request.setAttribute("numOfPage", numOfPage);
+        request.setAttribute("currentPage", page);
         request.setAttribute("list", list);
     }
 
